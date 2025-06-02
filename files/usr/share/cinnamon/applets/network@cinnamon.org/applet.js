@@ -57,9 +57,9 @@ var NMIface = '\
 var NMProxy = Gio.DBusProxy.makeProxyWrapper(NMIface);
 function NMDBus(initCallback, cancellable) {
     return new NMProxy(Gio.DBus.system,
-                       'org.freedesktop.NetworkManager',
-                       '/org/freedesktop/NetworkManager',
-                       initCallback, cancellable);
+        'org.freedesktop.NetworkManager',
+        '/org/freedesktop/NetworkManager',
+        initCallback, cancellable);
 }
 
 // shared between NMNetworkMenuItem and NMDeviceWWAN
@@ -122,7 +122,7 @@ NMNetworkMenuItem.prototype = {
         this.addActor(this._icons, { align: St.Align.END });
 
         this._signalIcon = new St.Icon({ icon_name: this._getIcon(),
-                                         style_class: 'popup-menu-icon' });
+            style_class: 'popup-menu-icon' });
         this._icons.add_actor(this._signalIcon);
 
         this._accessPoints = [ ];
@@ -504,51 +504,51 @@ NMDevice.prototype = {
 
     get statusLabel(){
         switch(this.device.state) {
-        case NM.DeviceState.DISCONNECTED:
-        case NM.DeviceState.ACTIVATED:
-            return null;
-        case NM.DeviceState.UNMANAGED:
-            /* Translators: this is for network devices that are physically present but are not
-               under NetworkManager's control (and thus cannot be used in the menu) */
-            return _("unmanaged");
-        case NM.DeviceState.DEACTIVATING:
-            return _("disconnecting...");
-        case NM.DeviceState.PREPARE:
-        case NM.DeviceState.CONFIG:
-        case NM.DeviceState.IP_CONFIG:
-        case NM.DeviceState.IP_CHECK:
-        case NM.DeviceState.SECONDARIES:
-            return _("connecting...");
-        case NM.DeviceState.NEED_AUTH:
-            /* Translators: this is for network connections that require some kind of key or password */
-            return _("authentication required");
-        case NM.DeviceState.UNAVAILABLE:
-            // This state is actually a compound of various states (generically unavailable,
-            // firmware missing, carrier not available), that are exposed by different properties
-            // (whose state may or may not updated when we receive state-changed).
-            if (!this._firmwareMissingId)
-                this._firmwareMissingId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
-            if (this.device.firmware_missing) {
-                /* Translators: this is for devices that require some kind of firmware or kernel
-                   module, which is missing */
-                return _("firmware missing");
-            }
-            if (this.device.capabilities & NM.DeviceCapabilities.CARRIER_DETECT) {
-                if (!this._carrierChangedId)
-                    this._carrierChangedId = this.device.connect('notify::carrier', Lang.bind(this, this._substateChanged));
-                if (!this.carrier) {
-                    /* Translators: this is for wired network devices that are physically disconnected */
-                    return _("cable unplugged");
+            case NM.DeviceState.DISCONNECTED:
+            case NM.DeviceState.ACTIVATED:
+                return null;
+            case NM.DeviceState.UNMANAGED:
+                /* Translators: this is for network devices that are physically present but are not
+                   under NetworkManager's control (and thus cannot be used in the menu) */
+                return _("unmanaged");
+            case NM.DeviceState.DEACTIVATING:
+                return _("disconnecting...");
+            case NM.DeviceState.PREPARE:
+            case NM.DeviceState.CONFIG:
+            case NM.DeviceState.IP_CONFIG:
+            case NM.DeviceState.IP_CHECK:
+            case NM.DeviceState.SECONDARIES:
+                return _("connecting...");
+            case NM.DeviceState.NEED_AUTH:
+                /* Translators: this is for network connections that require some kind of key or password */
+                return _("authentication required");
+            case NM.DeviceState.UNAVAILABLE:
+                // This state is actually a compound of various states (generically unavailable,
+                // firmware missing, carrier not available), that are exposed by different properties
+                // (whose state may or may not updated when we receive state-changed).
+                if (!this._firmwareMissingId)
+                    this._firmwareMissingId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
+                if (this.device.firmware_missing) {
+                    /* Translators: this is for devices that require some kind of firmware or kernel
+                       module, which is missing */
+                    return _("firmware missing");
                 }
-            }
-            /* Translators: this is for a network device that cannot be activated (for example it
-               is disabled by rfkill, or it has no coverage */
-            return _("unavailable");
-        case NM.DeviceState.FAILED:
-            return _("connection failed");
-        default:
-            log('Device state invalid, is %d'.format(this.device.state));
-            return 'invalid';
+                if (this.device.capabilities & NM.DeviceCapabilities.CARRIER_DETECT) {
+                    if (!this._carrierChangedId)
+                        this._carrierChangedId = this.device.connect('notify::carrier', Lang.bind(this, this._substateChanged));
+                    if (!this.carrier) {
+                        /* Translators: this is for wired network devices that are physically disconnected */
+                        return _("cable unplugged");
+                    }
+                }
+                /* Translators: this is for a network device that cannot be activated (for example it
+                   is disabled by rfkill, or it has no coverage */
+                return _("unavailable");
+            case NM.DeviceState.FAILED:
+                return _("connection failed");
+            default:
+                log('Device state invalid, is %d'.format(this.device.state));
+                return 'invalid';
         }
     },
 
@@ -892,8 +892,8 @@ NMDeviceModem.prototype = {
         if (this.mobileDevice) {
             // If operator_name is null, just pass the empty string, as the item is hidden anyway
             this._operatorItem = new PopupMenu.PopupImageMenuItem(this.mobileDevice.operator_name || '',
-                                                                  this._getSignalIcon(),
-                                                                  { reactive: false });
+                this._getSignalIcon(),
+                { reactive: false });
             if (!this.mobileDevice.operator_name)
                 this._operatorItem.actor.hide();
             this.section.addMenuItem(this._operatorItem);
@@ -913,7 +913,7 @@ NMDeviceModem.prototype = {
         // Mobile wizard is too complex for Cinnamon UI and
         // is handled by the network panel
         Util.spawn(['cinnamon-settings', 'network',
-                    'connect-3g', this.device.get_path()]);
+            'connect-3g', this.device.get_path()]);
         return null;
     }
 };
@@ -964,7 +964,6 @@ NMDeviceBluetooth.prototype = {
 };
 
 
-// Not a real device, but I save a lot code this way
 function NMDeviceVPN() {
     this._init.apply(this, arguments);
 }
@@ -973,11 +972,13 @@ NMDeviceVPN.prototype = {
     __proto__: NMDevice.prototype,
 
     _init: function(client) {
-        // Disable autoconnections
+        this._client = client
         this._autoConnectionName = null;
         this.category = NMConnectionCategory.VPN;
 
-        NMDevice.prototype._init.call(this, client, null, [ ]);
+        this._activeConnections = [];
+
+        NMDevice.prototype._init.call(this, client, null, []);
     },
 
     connectionValid: function(connection) {
@@ -989,26 +990,71 @@ NMDeviceVPN.prototype = {
     },
 
     get connected() {
-        return !!this._activeConnection;
+        return this._activeConnections.length > 0;
     },
 
-    setActiveConnection: function(activeConnection) {
-        NMDevice.prototype.setActiveConnection.call(this, activeConnection);
+    setActiveConnections: function(activeConnections) {
+        this._activeConnections = activeConnections || [];
 
-        this.emit('active-connection-changed');
-    },
-
-    _shouldShowConnectionList: function() {
-        return true;
+        this._createSection();
+        this.emit('active-connections-changed');
     },
 
     deactivate: function() {
-        if (this._activeConnection)
-            this._client.deactivate_connection(this._activeConnection, null);
+        for (let ac of this._activeConnections)
+            this._client.deactivate_connection(ac, null);
+
+        this._activeConnections = []
     },
 
     statusLabel: null,
-    controllable: true
+    controllable: true,
+
+    _clearSection: function() {
+        if (this.section && this.section.removeAll)
+            this.section.removeAll();
+
+        this._autoConnectionItem = null;
+        this._overflowItem = null;
+
+        for (let i = 0; i < this._connections.length; i++) {
+            if (this._connections[i].item && this._connections[i].item.destroy)
+                this._connections[i].item.destroy();
+
+            this._connections[i].item = null;
+        }
+    },
+
+    _updateConnectionItemView: function(item, connection, active) {
+        item.label.text = connection._name  || _("Connected (private)");
+        if (active) {
+            item.setShowDot(true);
+            item.actor.add_style_class_name('popup-device-menu-item');
+        } else {
+            item.setShowDot(false);
+            item.actor.remove_style_class_name('popup-device-menu-item');
+        }
+    },
+
+    _createSection: function() {
+        for (let obj of this._connections) {
+            if (!obj.item) {
+                obj.item = new PopupMenu.PopupMenuItem(obj.name);
+                this._updateConnectionItemView(obj.item, obj.connection);
+                obj.item.connect('activate', Lang.bind(this, function() {
+                    let activeConnection = this._activeConnections.find(ac => ac.connection === obj.connection);
+                    if (activeConnection) {
+                        this._client.deactivate_connection(activeConnection, null);
+                    } else {
+                        this._client.activate_connection_async(obj.connection, this.device, null, null, null);
+                    }
+                }));
+                this.section.addMenuItem(obj.item);
+            } else {
+                this._updateConnectionItemView(obj.item, obj.connection, this._activeConnections.some(ac => ac.connection == obj.connection));
+            }
+        }
+    },
 };
 
 function NMDeviceWIREGUARD() {
@@ -1110,12 +1156,12 @@ NMDeviceWireless.prototype = {
                 obj.accessPoints.push(ap);
             } else {
                 obj = { ssid: ap.get_ssid(),
-                        mode: ap.mode,
-                        security: this._getApSecurityType(ap),
-                        connections: [ ],
-                        item: null,
-                        accessPoints: [ ap ]
-                      };
+                    mode: ap.mode,
+                    security: this._getApSecurityType(ap),
+                    connections: [ ],
+                    item: null,
+                    accessPoints: [ ap ]
+                };
                 obj.ssidText = ssidToLabel(obj.ssid);
                 this._networks.push(obj);
             }
@@ -1287,21 +1333,21 @@ NMDeviceWireless.prototype = {
             return 1;
 
         return two.accessPoints[0].strength - one.accessPoints[0].strength;
-/**
-        let oneHasSecurity = one.security != NMAccessPointSecurity.NONE;
-        let twoHasSecurity = two.security != NMAccessPointSecurity.NONE;
+        /**
+         let oneHasSecurity = one.security != NMAccessPointSecurity.NONE;
+         let twoHasSecurity = two.security != NMAccessPointSecurity.NONE;
 
-        // place secure connections first
-        // (we treat WEP/WPA/WPA2 the same as there is no way to
-        // take them apart from the UI)
-        if (oneHasSecurity && !twoHasSecurity)
-            return -1;
-        else if (!oneHasSecurity && twoHasSecurity)
-            return 1;
+         // place secure connections first
+         // (we treat WEP/WPA/WPA2 the same as there is no way to
+         // take them apart from the UI)
+         if (oneHasSecurity && !twoHasSecurity)
+         return -1;
+         else if (!oneHasSecurity && twoHasSecurity)
+         return 1;
 
-        // sort alphabetically
-        return GLib.utf8_collate(one.ssidText, two.ssidText);
-**/
+         // sort alphabetically
+         return GLib.utf8_collate(one.ssidText, two.ssidText);
+         **/
     },
 
     _networkCompare: function(network, accessPoint) {
@@ -1362,12 +1408,12 @@ NMDeviceWireless.prototype = {
                 apObj.item.updateAccessPoints(apObj.accessPoints);
         } else {
             apObj = { ssid: accessPoint.get_ssid(),
-                      mode: accessPoint.mode,
-                      security: this._getApSecurityType(accessPoint),
-                      connections: [ ],
-                      item: null,
-                      accessPoints: [ accessPoint ]
-                    };
+                mode: accessPoint.mode,
+                security: this._getApSecurityType(accessPoint),
+                connections: [ ],
+                item: null,
+                accessPoints: [ accessPoint ]
+            };
             apObj.ssidText = ssidToLabel(apObj.ssid);
             needsupdate = true;
         }
@@ -1611,11 +1657,11 @@ NMDeviceWireless.prototype = {
             // We cannot read the connection (due to ACL, or API incompatibility), but we still show signal if we have it
             if (this._activeNetwork)
                 this._activeConnectionItem = new NMNetworkMenuItem(this._activeNetwork.accessPoints, undefined,
-                                                                   { reactive: false });
+                    { reactive: false });
             else
                 this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(_("Connected (private)"),
-                                                                              'network-wireless-connected',
-                                                                              { reactive: false });
+                    'network-wireless-connected',
+                    { reactive: false });
         }
         this._activeConnectionItem.setShowDot(true);
         this._activeConnectionItem.actor.add_style_class_name('popup-device-menu-item');
@@ -1681,7 +1727,7 @@ NMDeviceWireless.prototype = {
                     // 802.1x-enabled APs require further configuration, so they're
                     // handled in cinnamon-settings
                     Util.spawn(['cinnamon-settings', 'network', 'connect-8021x-wifi',
-                                this.device.get_path(), accessPoints[0].path]);
+                        this.device.get_path(), accessPoints[0].path]);
                 } else {
                     let connection = this._createAutomaticConnection(apObj);
                     this._client.add_and_activate_connection_async(connection, this.device, accessPoints[0].path, null, null);
@@ -1737,9 +1783,9 @@ NMMessageTraySource.prototype = {
         MessageTray.Source.prototype._init.call(this, _("Network Manager"));
 
         let icon = new St.Icon({ icon_name: 'network-transmit-receive',
-                                 icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: this.ICON_SIZE
-                               });
+            icon_type: St.IconType.SYMBOLIC,
+            icon_size: this.ICON_SIZE
+        });
         this._setSummaryIcon(icon);
     }
 };
@@ -1842,7 +1888,7 @@ CinnamonNetworkApplet.prototype = {
                 device: new NMDeviceVPN(this._client),
                 item: new NMWiredSectionTitleMenuItem(_("VPN Connections"))
             };
-            this._devices.vpn.device.connect('active-connection-changed', Lang.bind(this, function() {
+            this._devices.vpn.device.connect('active-connections-changed', Lang.bind(this, function() {
                 this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
             }));
             this._devices.vpn.item.updateForDevice(this._devices.vpn.device);
@@ -2022,11 +2068,11 @@ CinnamonNetworkApplet.prototype = {
         this._ensureSource();
 
         let icon = new St.Icon({ icon_name: iconName,
-                                 icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: this._source.ICON_SIZE
-                               });
+            icon_type: St.IconType.SYMBOLIC,
+            icon_size: this._source.ICON_SIZE
+        });
         device._notification = new MessageTray.Notification(this._source, title, text,
-                                                            { icon: icon });
+            { icon: icon });
         device._notification.setUrgency(urgency);
         device._notification.setTransient(true);
         device._notification.connect('destroy', function() {
@@ -2048,9 +2094,9 @@ CinnamonNetworkApplet.prototype = {
                 // XXX: nm-applet has no special text depending on reason
                 // but I'm not sure of this generic message
                 this._notifyForDevice(device, 'network-error',
-                                      _("Connection failed"),
-                                      _("Activation of network connection failed"),
-                                     MessageTray.Urgency.HIGH);
+                    _("Connection failed"),
+                    _("Activation of network connection failed"),
+                    MessageTray.Urgency.HIGH);
             }));
             wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
                 this._syncSectionTitle(dev.category);
@@ -2089,41 +2135,43 @@ CinnamonNetworkApplet.prototype = {
     },
 
     _syncActiveConnections: function() {
-        let closedConnections = [ ];
-        let newActiveConnections = this._client.get_active_connections() || [ ];
-        for (let i = 0; i < this._activeConnections.length; i++) {
-            let a = this._activeConnections[i];
-            if (newActiveConnections.indexOf(a) == -1) // connection is removed
+        let closedConnections = [];
+        let newActiveConnections = this._client.get_active_connections() || [];
+
+        for (let a of this._activeConnections) {
+            if (!newActiveConnections.includes(a))
                 closedConnections.push(a);
         }
 
-        for (let i = 0; i < closedConnections.length; i++) {
-            let active = closedConnections[i];
+        for (let active of closedConnections) {
             if (active._primaryDevice) {
-                active._primaryDevice.setActiveConnection(null);
+                if (active._type == NM.SETTING_VPN_SETTING_NAME)
+                    this._devices.vpn.device.setActiveConnections([]);
+                else
+                    active._primaryDevice.setActiveConnection(null);
+
                 active._primaryDevice = null;
             }
+
             if (active._inited) {
                 active.disconnect(active._notifyStateId);
-                //active.disconnect(active._notifyDefaultId);
-                //active.disconnect(active._notifyDefault6Id);
                 active._inited = false;
             }
         }
 
         this._activeConnections = newActiveConnections;
         this._mainConnection = null;
+
         let activating = null;
         let activated = null;
         let default_ip4 = null;
         let default_ip6 = null;
-        for (let i = 0; i < this._activeConnections.length; i++) {
-            let a = this._activeConnections[i];
-            if (!a._inited) {
-                //a._notifyDefaultId = a.connect('notify::default', Lang.bind(this, this._updateIcon));
-                //a._notifyDefault6Id = a.connect('notify::default6', Lang.bind(this, this._updateIcon));
-                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActivated));
 
+        let vpnConnections = [];
+
+        for (let a of this._activeConnections) {
+            if (!a._inited) {
+                a._notifyStateId = a.connect('notify::state', Lang.bind(this, this._notifyActivated));
                 a._inited = true;
             }
 
@@ -2136,69 +2184,59 @@ CinnamonNetworkApplet.prototype = {
                 }
             }
 
-            if (!a._section){
-                // Do not take connections which section is undefined into account
-                // For instance, in Mint 18, when the "vpn" is "activated", we sometimes see a "tun" act as the default ipv4 connection.
+            if (!a._section)
                 continue;
-            }
 
             if (a.state == NM.ActiveConnectionState.ACTIVATED) {
                 if (!default_ip4) {
-                    // We didn't find the default IPV4 device yet..
-                    if (!default_ip6) {
-                        // We didn't find the default IPV6 device either so consider this one.
+                    if (!default_ip6)
                         activated = a;
-                    }
-                    else {
-                        // We already found the default IPV6 device, so only use this one if it's the default IPV4 device
-                        if (a['default']) {
-                            activated = a;
-                        }
-                    }
+                    else if (a['default'])
+                        activated = a;
                 }
             }
-            if (a.state == NM.ActiveConnectionState.ACTIVATING) {
-                activating = a;
-            }
 
-            if (a['default']) {
+            if (a.state == NM.ActiveConnectionState.ACTIVATING)
+                activating = a;
+
+            if (a['default'])
                 default_ip4 = a;
-            }
-            if (a.default6) {
+            if (a.default6)
                 default_ip6 = a;
-            }
 
             if (!a._primaryDevice) {
                 if (a._type != NM.SETTING_VPN_SETTING_NAME && a._type != NM.SETTING_WIREGUARD_SETTING_NAME) {
-                    // find a good device to be considered primary
-                    a._primaryDevice = null;
-                    let devices = a.get_devices() || [ ];
-                    for (let j = 0; j < devices.length; j++) {
-                        let d = devices[j];
+                    let devices = a.get_devices() || [];
+                    for (let d of devices) {
                         if (d._delegate) {
                             a._primaryDevice = d._delegate;
                             break;
                         }
                     }
                 } else {
-                    if (a._type == NM.SETTING_VPN_SETTING_NAME)
-                        a._primaryDevice = this._devices.vpn.device;
-                    else {
-                        a._primaryDevice = this._devices.wireguard.device;
-                    }
+                    a._primaryDevice = a._type == NM.SETTING_VPN_SETTING_NAME
+                        ? this._devices.vpn.device
+                        : this._devices.wireguard.device;
                 }
 
                 if (a.state == NM.ActiveConnectionState.ACTIVATED &&
                     a._primaryDevice && a._primaryDevice._notification) {
-                        a._primaryDevice._notification.destroy();
-                        a._primaryDevice._notification = null;
+                    a._primaryDevice._notification.destroy();
+                    a._primaryDevice._notification = null;
                 }
             }
 
             if (a._primaryDevice) {
-                a._primaryDevice.setActiveConnection(a);
+                if (a._type == NM.SETTING_VPN_SETTING_NAME) {
+                    vpnConnections.push(a);
+                } else {
+                    a._primaryDevice.setActiveConnection(a);
+                }
             }
         }
+
+        if (this._devices.vpn && this._devices.vpn.device)
+            this._devices.vpn.device.setActiveConnections(vpnConnections);
 
         this._mainConnection = activated || activating || default_ip4 || default_ip6 || null;
     },
@@ -2206,8 +2244,8 @@ CinnamonNetworkApplet.prototype = {
     _notifyActivated: function(activeConnection) {
         if (activeConnection.state == NM.ActiveConnectionState.ACTIVATED &&
             activeConnection._primaryDevice && activeConnection._primaryDevice._notification) {
-                activeConnection._primaryDevice._notification.destroy();
-                activeConnection._primaryDevice._notification = null;
+            activeConnection._primaryDevice._notification.destroy();
+            activeConnection._primaryDevice._notification = null;
         }
 
         this._updateIcon();
@@ -2348,31 +2386,31 @@ CinnamonNetworkApplet.prototype = {
             } else if (mc.state == NM.ActiveConnectionState.ACTIVATING) {
                 new_delay = FAST_PERIODIC_UPDATE_FREQUENCY_SECONDS;
                 switch (mc._section) {
-                case NMConnectionCategory.WWAN:
-                    this._setIcon('network-cellular-acquiring');
-                    this.set_applet_tooltip(_("Connecting to the cellular network..."));
-                    break;
-                case NMConnectionCategory.WIRELESS:
-                    this._setIcon('network-wireless-acquiring');
-                    this.set_applet_tooltip(_("Connecting to the wireless network..."));
-                    break;
-                case NMConnectionCategory.WIRED:
-                    this._setIcon('network-wired-acquiring');
-                    this.set_applet_tooltip(_("Connecting to the wired network..."));
-                    break;
-                case NMConnectionCategory.VPN:
-                    this._setIcon('network-vpn-acquiring');
-                    this.set_applet_tooltip(_("Connecting to the VPN..."));
-                    break;
-                case NMConnectionCategory.WIREGUARD:
-                    this._setIcon('network-vpn-acquiring');
-                    this.set_applet_tooltip(_("Connecting to WIREGUARD..."));
-                    break;
-                default:
-                    // fallback to a generic connected icon
-                    // (it could be a private connection of some other user)
-                    this._setIcon('network-wired-acquiring');
-                    this.set_applet_tooltip(_("Connecting to the network..."));
+                    case NMConnectionCategory.WWAN:
+                        this._setIcon('network-cellular-acquiring');
+                        this.set_applet_tooltip(_("Connecting to the cellular network..."));
+                        break;
+                    case NMConnectionCategory.WIRELESS:
+                        this._setIcon('network-wireless-acquiring');
+                        this.set_applet_tooltip(_("Connecting to the wireless network..."));
+                        break;
+                    case NMConnectionCategory.WIRED:
+                        this._setIcon('network-wired-acquiring');
+                        this.set_applet_tooltip(_("Connecting to the wired network..."));
+                        break;
+                    case NMConnectionCategory.VPN:
+                        this._setIcon('network-vpn-acquiring');
+                        this.set_applet_tooltip(_("Connecting to the VPN..."));
+                        break;
+                    case NMConnectionCategory.WIREGUARD:
+                        this._setIcon('network-vpn-acquiring');
+                        this.set_applet_tooltip(_("Connecting to WIREGUARD..."));
+                        break;
+                    default:
+                        // fallback to a generic connected icon
+                        // (it could be a private connection of some other user)
+                        this._setIcon('network-wired-acquiring');
+                        this.set_applet_tooltip(_("Connecting to the network..."));
                 }
             } else {
                 let dev;
@@ -2380,81 +2418,81 @@ CinnamonNetworkApplet.prototype = {
                 // let limited_conn = this._correctStateForTunnel(this._client.get_connectivity()) !== NM.ConnectivityState.FULL;
 
                 switch (mc._section) {
-                case NMConnectionCategory.WIRELESS:
-                    dev = mc._primaryDevice;
-                    if (dev) {
-                        let ap = dev.device.active_access_point;
-                        let mode = dev.device.mode;
-                        if (!ap) {
-                            if (mode != NM80211Mode.ADHOC) {
-                                log('An active wireless connection, in infrastructure mode, involves no access point?');
-                                break;
-                            }
-                            this._setIcon('network-wireless-connected');
-                            this.set_applet_tooltip(_("Connected to the wireless network"));
-                        } else {
-                            if (limited_conn) {
-                                this._setIcon('network-wireless-no-route');
-                                this.set_applet_tooltip(_("Wireless connection") + ": " + ssidToLabel(ap.get_ssid()) + " " + _("(Limited connectivity)"));
+                    case NMConnectionCategory.WIRELESS:
+                        dev = mc._primaryDevice;
+                        if (dev) {
+                            let ap = dev.device.active_access_point;
+                            let mode = dev.device.mode;
+                            if (!ap) {
+                                if (mode != NM80211Mode.ADHOC) {
+                                    log('An active wireless connection, in infrastructure mode, involves no access point?');
+                                    break;
+                                }
+                                this._setIcon('network-wireless-connected');
+                                this.set_applet_tooltip(_("Connected to the wireless network"));
                             } else {
-                                this._setIcon('network-wireless-signal-' + signalToIcon(ap.strength));
-                                this.set_applet_tooltip(_("Wireless connection") + ": " + ssidToLabel(ap.get_ssid()) + " ("+ ap.strength +"%)");
+                                if (limited_conn) {
+                                    this._setIcon('network-wireless-no-route');
+                                    this.set_applet_tooltip(_("Wireless connection") + ": " + ssidToLabel(ap.get_ssid()) + " " + _("(Limited connectivity)"));
+                                } else {
+                                    this._setIcon('network-wireless-signal-' + signalToIcon(ap.strength));
+                                    this.set_applet_tooltip(_("Wireless connection") + ": " + ssidToLabel(ap.get_ssid()) + " ("+ ap.strength +"%)");
+                                }
                             }
+                        } else {
+                            log('Active connection with no primary device?');
                         }
-                    } else {
-                        log('Active connection with no primary device?');
-                    }
-                    break;
-                case NMConnectionCategory.WIRED:
-                    if (limited_conn) {
-                        this._setIcon('network-wired-no-route');
-                        this.set_applet_tooltip(_("Connected to the wired network") + " " + _("(Limited connectivity)"));
+                        break;
+                    case NMConnectionCategory.WIRED:
+                        if (limited_conn) {
+                            this._setIcon('network-wired-no-route');
+                            this.set_applet_tooltip(_("Connected to the wired network") + " " + _("(Limited connectivity)"));
 
-                    } else {
+                        } else {
+                            this._setIcon('network-wired');
+                            this.set_applet_tooltip(_("Connected to the wired network"));
+                        }
+                        break;
+                    case NMConnectionCategory.WWAN:
+                        dev = mc._primaryDevice;
+                        if (!dev) {
+                            log('Active connection with no primary device?');
+                            break;
+                        }
+                        if (!dev.mobileDevice) {
+                            // this can happen for bluetooth in PAN mode
+                            this._setIcon('network-cellular-connected');
+                            this.set_applet_tooltip(_("Connected to the cellular network"));
+                            break;
+                        }
+
+                        if (limited_conn) {
+                            this._setIcon('network-cellular-no-route');
+                            this.set_applet_tooltip(_("Connected to the cellular network") + " " + _("(Limited connectivity)"));
+                        } else {
+                            this._setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
+                            this.set_applet_tooltip(_("Connected to the cellular network"));
+                        }
+
+                        break;
+                    case NMConnectionCategory.VPN:
+                        // Should we indicate limited connectivity for VPNs like we do above? What if the connection is to
+                        // a local machine? Need to test.
+                        this._setIcon('network-vpn');
+                        this.set_applet_tooltip(_("Connected to the VPN"));
+                        break;
+                    case NMConnectionCategory.WIREGUARD:
+                        // Should we indicate limited connectivity for WIREGUARDs like we do above? What if the connection is to
+                        // a local machine? Need to test.
+                        this._setIcon('network-vpn');
+                        this.set_applet_tooltip(_("Connected to WIREGUARD"));
+                        break;
+                    default:
+                        // fallback to a generic connected icon
+                        // (it could be a private connection of some other user)
                         this._setIcon('network-wired');
-                        this.set_applet_tooltip(_("Connected to the wired network"));
-                    }
-                    break;
-                case NMConnectionCategory.WWAN:
-                    dev = mc._primaryDevice;
-                    if (!dev) {
-                        log('Active connection with no primary device?');
+                        this.set_applet_tooltip(_("Connected to the network"));
                         break;
-                    }
-                    if (!dev.mobileDevice) {
-                        // this can happen for bluetooth in PAN mode
-                        this._setIcon('network-cellular-connected');
-                        this.set_applet_tooltip(_("Connected to the cellular network"));
-                        break;
-                    }
-
-                    if (limited_conn) {
-                        this._setIcon('network-cellular-no-route');
-                        this.set_applet_tooltip(_("Connected to the cellular network") + " " + _("(Limited connectivity)"));
-                    } else {
-                        this._setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality));
-                        this.set_applet_tooltip(_("Connected to the cellular network"));
-                    }
-
-                    break;
-                case NMConnectionCategory.VPN:
-                    // Should we indicate limited connectivity for VPNs like we do above? What if the connection is to
-                    // a local machine? Need to test.
-                    this._setIcon('network-vpn');
-                    this.set_applet_tooltip(_("Connected to the VPN"));
-                    break;
-                case NMConnectionCategory.WIREGUARD:
-                    // Should we indicate limited connectivity for WIREGUARDs like we do above? What if the connection is to
-                    // a local machine? Need to test.
-                    this._setIcon('network-vpn');
-                    this.set_applet_tooltip(_("Connected to WIREGUARD"));
-                    break;
-                default:
-                    // fallback to a generic connected icon
-                    // (it could be a private connection of some other user)
-                    this._setIcon('network-wired');
-                    this.set_applet_tooltip(_("Connected to the network"));
-                    break;
                 }
             }
             if (this._devices.wireguard.item && this._devices.wireguard.item._switch.state) {
@@ -2495,6 +2533,9 @@ CinnamonNetworkApplet.prototype = {
     },
 
     _periodicUpdateIcon: function() {
+        // if (this.menu.isOpen) {
+        //     return GLib.SOURCE_CONTINUE;
+        // }
         let new_delay = this._updateIcon();
         this._lastConnectivityState = this._client.get_connectivity();
 
